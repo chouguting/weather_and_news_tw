@@ -17,41 +17,43 @@ struct NewsDetailView: View {
     
     var body: some View {
         ScrollView(){
-            if let imageUrl = theArticle.urlToImage{
-                AsyncImage(url: URL(string: imageUrl)!) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                } placeholder: {
-                    Color.purple.opacity(0.1)
+            VStack(alignment:.center){
+                if let imageUrl = theArticle.urlToImage{
+                    AsyncImage(url: URL(string: imageUrl)!) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    } placeholder: {
+                        Color.purple.opacity(0.1)
+                    }
+                    .frame(height: 300)
+                    .clipped()
                 }
-                .frame(width: UIScreen.screenWidth,height: 300)
-                .clipped()
-            }
-            
-            
-            Text(theArticle.title).bold().font(.title).padding().frame(maxWidth: UIScreen.screenWidth*0.6)
-            if let description = theArticle.description{
-                Text(description).padding().frame(maxWidth: UIScreen.screenWidth*0.6)
-            }else{
-                Text("點擊連結以查看更多").padding()
-            }
-            
-            Button("閱讀更多") {
-                openURL(URL(string: theArticle.url)!)
-            }.buttonStyle(.bordered).padding()
-            Spacer()
-            Divider()
-            Text("相關新聞：")
-            
-            
-            
-            ForEach(newsSearchViewModel.searchedNews){
-                item in
-                Link(item.name, destination: URL(string: item.url)!).padding()
-            }.overlay{
-                if(newsSearchViewModel.searchedNews.isEmpty){
-                    ProgressView()
+                
+                
+                Text(theArticle.title).bold().font(.title).padding()
+                if let description = theArticle.description{
+                    Text(description).padding()
+                }else{
+                    Text("點擊連結以查看更多").padding()
+                }
+                
+                Button("閱讀更多") {
+                    openURL(URL(string: theArticle.url)!)
+                }.buttonStyle(.bordered).padding()
+                Spacer()
+                Divider()
+                Text("相關新聞：")
+                
+                
+                
+                ForEach(newsSearchViewModel.searchedNews){
+                    item in
+                    Link(item.name, destination: URL(string: item.url)!).padding()
+                }.overlay{
+                    if(newsSearchViewModel.searchedNews.isEmpty){
+                        ProgressView()
+                    }
                 }
             }
             
@@ -59,7 +61,7 @@ struct NewsDetailView: View {
             
             
             
-        }.frame(maxWidth:.infinity,alignment: .topLeading).edgesIgnoringSafeArea(.top).onAppear {
+        }.frame(maxWidth:UIScreen.screenWidth,alignment: .topLeading).edgesIgnoringSafeArea(.top).onAppear {
             let tempStr = theArticle.title.components(separatedBy: "-").dropLast().joined(separator: "-")
             newsSearchViewModel.fetchItems(searchStr: tempStr)
         }

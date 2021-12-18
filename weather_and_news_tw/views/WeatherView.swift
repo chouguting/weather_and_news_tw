@@ -39,6 +39,7 @@ struct WeatherView: View {
                         if let cityCurrentWeather = cityCurrentWeatherViewModel.currentWeather{
                            CurrentWeatherRow(cityCurrentWeather: cityCurrentWeather)
                             
+                            
                         }else{
                             Text("loading...")
                         }

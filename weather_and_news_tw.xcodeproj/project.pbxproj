@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D106BB93276E3BA300C1F1B7 /* RefreshableScrollView in Frameworks */ = {isa = PBXBuildFile; productRef = D106BB92276E3BA300C1F1B7 /* RefreshableScrollView */; };
 		D13542C92764BB570041BBB3 /* WeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13542C82764BB570041BBB3 /* WeatherView.swift */; };
 		D13542CB2764BCAE0041BBB3 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13542CA2764BCAE0041BBB3 /* LocationManager.swift */; };
 		D13542CD2764C7620041BBB3 /* GetLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13542CC2764C7610041BBB3 /* GetLocationView.swift */; };
@@ -21,6 +22,7 @@
 		D13542E2276530330041BBB3 /* NewsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13542E1276530330041BBB3 /* NewsDetailView.swift */; };
 		D13542E4276539600041BBB3 /* NewsSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13542E3276539600041BBB3 /* NewsSearchResponse.swift */; };
 		D13542E627653C590041BBB3 /* NewsSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13542E527653C590041BBB3 /* NewsSearchViewModel.swift */; };
+		D139E739276E19EF00998A80 /* NewsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D139E738276E19EF00998A80 /* NewsRow.swift */; };
 		D1533E152764B917003A5663 /* weather_and_news_twApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1533E142764B917003A5663 /* weather_and_news_twApp.swift */; };
 		D1533E172764B917003A5663 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1533E162764B917003A5663 /* ContentView.swift */; };
 		D1533E192764B918003A5663 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1533E182764B918003A5663 /* Assets.xcassets */; };
@@ -49,6 +51,7 @@
 		D13542E1276530330041BBB3 /* NewsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDetailView.swift; sourceTree = "<group>"; };
 		D13542E3276539600041BBB3 /* NewsSearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsSearchResponse.swift; sourceTree = "<group>"; };
 		D13542E527653C590041BBB3 /* NewsSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsSearchViewModel.swift; sourceTree = "<group>"; };
+		D139E738276E19EF00998A80 /* NewsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsRow.swift; sourceTree = "<group>"; };
 		D1533E112764B917003A5663 /* Taiwan weather and news.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Taiwan weather and news.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1533E142764B917003A5663 /* weather_and_news_twApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = weather_and_news_twApp.swift; sourceTree = "<group>"; };
 		D1533E162764B917003A5663 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -67,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D106BB93276E3BA300C1F1B7 /* RefreshableScrollView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +112,7 @@
 				D183ED52276BA5F9002A9322 /* NoNetworkView.swift */,
 				D13542CC2764C7610041BBB3 /* GetLocationView.swift */,
 				D13542CE2764CE770041BBB3 /* NewsView.swift */,
+				D139E738276E19EF00998A80 /* NewsRow.swift */,
 				D13542E1276530330041BBB3 /* NewsDetailView.swift */,
 				D183ED54276BACAB002A9322 /* CurrentWeatherRow.swift */,
 				D183ED56276BB8FA002A9322 /* WeatherForecastRow.swift */,
@@ -169,6 +174,9 @@
 			dependencies = (
 			);
 			name = weather_and_news_tw;
+			packageProductDependencies = (
+				D106BB92276E3BA300C1F1B7 /* RefreshableScrollView */,
+			);
 			productName = weather_and_news_tw;
 			productReference = D1533E112764B917003A5663 /* Taiwan weather and news.app */;
 			productType = "com.apple.product-type.application";
@@ -197,6 +205,9 @@
 				Base,
 			);
 			mainGroup = D1533E082764B917003A5663;
+			packageReferences = (
+				D106BB91276E3BA300C1F1B7 /* XCRemoteSwiftPackageReference "RefreshableScrollView" */,
+			);
 			productRefGroup = D1533E122764B917003A5663 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -233,6 +244,7 @@
 				D13542E4276539600041BBB3 /* NewsSearchResponse.swift in Sources */,
 				D1533E172764B917003A5663 /* ContentView.swift in Sources */,
 				D13542CF2764CE770041BBB3 /* NewsView.swift in Sources */,
+				D139E739276E19EF00998A80 /* NewsRow.swift in Sources */,
 				D13542DE27651C900041BBB3 /* NewsResponse.swift in Sources */,
 				D13542DA2764FDB70041BBB3 /* CityWeatherForecastResponse.swift in Sources */,
 				D13542CD2764C7620041BBB3 /* GetLocationView.swift in Sources */,
@@ -455,6 +467,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D106BB91276E3BA300C1F1B7 /* XCRemoteSwiftPackageReference "RefreshableScrollView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/phuhuynh2411/RefreshableScrollView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D106BB92276E3BA300C1F1B7 /* RefreshableScrollView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D106BB91276E3BA300C1F1B7 /* XCRemoteSwiftPackageReference "RefreshableScrollView" */;
+			productName = RefreshableScrollView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D1533E092764B917003A5663 /* Project object */;
 }

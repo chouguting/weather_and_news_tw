@@ -26,7 +26,7 @@ struct GetLocationView: View {
         VStack{
             
             Text("請提供位置").font(.title2).bold()
-            Text("目前城市：\(cityViewModel.CityName)")
+            Text("我目前的位置：\(cityViewModel.CityName)")
             
             Picker("選擇城市", selection: $cityViewModel.selectCityIndex) {
                 ForEach(cityViewModel.cityList.indices){

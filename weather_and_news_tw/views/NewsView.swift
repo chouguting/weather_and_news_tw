@@ -6,30 +6,57 @@
 //
 
 import SwiftUI
+import RefreshableScrollView
+
 
 struct NewsView: View {
     @StateObject var newsViewModel = NewsViewModel()
+    @State var showSheet = false
+   
+    @State private var selectedArticle: Article? = nil
+    private var twoColumnGrid = [GridItem(.adaptive(minimum: 500),spacing: 0)]
+    @State var refresh = false
     
     var body: some View {
-        NavigationView {
-            List{
-                ForEach(newsViewModel.newArticles){
-                    item in
-                    let tempStr = item.title.components(separatedBy: "-").dropLast().joined(separator: "-")
-                    
-    //                Link(tempStr, destination: URL(string: item.url)!)
-                    NavigationLink(tempStr) {
-                        NewsDetailView(theArticle: item)
+        
+        RefreshableScrollView(refreshing: $refresh,action: {
+            // add your code here
+            newsViewModel.fetchItems()
+            // remmber to set the refresh to false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.refresh = false
+            }
+        }) {
+            LazyVGrid(columns: twoColumnGrid,spacing: 5){
+                
+                if(!newsViewModel.newArticles.isEmpty){
+                    ForEach(newsViewModel.newArticles){
+                        item in
+                        
+                        Button {
+                            showSheet = true
+                            selectedArticle = item
+                        } label: {
+                            NewsRow(arcticle: item)
+                        }
+                        //                    .sheet(isPresented: $showSheet) {
+                        //
+                        //                        NewsDetailView(theArticle: item)
+                        //
+                        //
+                        //                    }
+                        
                     }
-
                 }
-            }.overlay{
-                if(newsViewModel.newArticles.isEmpty){
-                    ProgressView()
-                }
-            }.refreshable {
-                newsViewModel.fetchItems()
-            }.navigationTitle("新聞")
+            }
+        }.overlay{
+            if(newsViewModel.newArticles.isEmpty){
+                ProgressView()
+            }
+        }.refreshable {
+            newsViewModel.fetchItems()
+        }.navigationTitle("新聞").listRowSeparator(.hidden).sheet(item: self.$selectedArticle) { item in
+            NewsDetailView(theArticle: item)
         }
     }
 }

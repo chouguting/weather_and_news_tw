@@ -15,6 +15,7 @@ extension UIScreen{
 
 struct ContentView: View {
     @StateObject var networkMonitor = NetworkMonitor()
+    @State private var showAlert = false
     var body: some View {
         if(networkMonitor.status == .connected){
             TabView {
@@ -26,7 +27,11 @@ struct ContentView: View {
                 }
             }
         }else{
-            NoNetworkView(networkMonitor: networkMonitor)
+            NoNetworkView(networkMonitor: networkMonitor).onAppear {
+                showAlert=true
+            }.alert("No connection", isPresented: $showAlert, actions: {
+                Button("OK") { }
+            })
         }
         
         
