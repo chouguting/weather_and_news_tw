@@ -49,6 +49,7 @@ struct GetLocationView: View {
             
             Button {
                 requestingLocation = false
+                UserDefaults.standard.set(cityViewModel.selectCityIndex, forKey: "weatherCityIndex")
                 cityForecastViewModel.fetchItems(locationStr: cityViewModel.cityList[cityViewModel.selectCityIndex])
                 cityCurrentWeatherViewModel.fetchItems(locationStr: cityViewModel.cityEngList[cityViewModel.selectCityIndex])
             } label: {

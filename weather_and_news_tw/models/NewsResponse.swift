@@ -10,7 +10,7 @@ import Foundation
 struct NewsResponse: Codable {
     let status:String?
     let totalResults:Int?
-    let articles:[Article]
+    var articles:[Article]
     
 }
 
@@ -22,5 +22,6 @@ struct Article:Codable,Identifiable{
     let url:String
     let urlToImage:String?
     let publishedAt:String?
+    var lTitle:String?
 }
 

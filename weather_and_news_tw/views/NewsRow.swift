@@ -9,14 +9,20 @@ import SwiftUI
 
 struct NewsRow: View {
     let arcticle:Article
+    
+    
     var body: some View {
         VStack{
-            let tempStr = arcticle.title.components(separatedBy: "-").dropLast().joined(separator: "-")
+            
+            
             if let imageUrl = arcticle.urlToImage{
                 AsyncImage(url: URL(string: imageUrl)!) { image in
-                    image
-                        .resizable()
-                        .scaledToFit()
+                    VStack{
+                        image
+                            .resizable()
+                            .scaledToFit()
+                    }
+                    
                 } placeholder: {
                     //Color.purple.opacity(0.1)
                     Image(systemName: "newspaper").resizable().padding()
@@ -24,7 +30,12 @@ struct NewsRow: View {
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                 .clipped()
             }
-            Text(tempStr).font(.title2).foregroundColor(.black)
+            if let tempStr = arcticle.lTitle{
+                Text(tempStr.components(separatedBy: "-").dropLast().joined(separator: "-")+"\n").font(.title2).foregroundColor(.black).lineLimit(2)
+            }else{
+                Text(arcticle.title.components(separatedBy: "-").dropLast().joined(separator: "-")+"\n").font(.title2).foregroundColor(.black).lineLimit(2)
+            }
+            
             
         }.frame(width:((UIScreen.screenWidth<400) ? (UIScreen.screenWidth*0.9): 400)).padding().background(Color(red: 224.0/255, green: 224.0/255, blue: 235.0/255)).clipShape(RoundedRectangle(cornerRadius: 16))
     }

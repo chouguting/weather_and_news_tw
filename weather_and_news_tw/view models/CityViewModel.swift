@@ -9,9 +9,10 @@ import Foundation
 
 class CityViewModel: ObservableObject {
     
+    
     @Published var CityName:String = ""
     @Published var ChineseCityName:String = ""
-    @Published var selectCityIndex = 0
+    @Published var selectCityIndex = UserDefaults.standard.object(forKey: "weatherCityIndex") != nil ? UserDefaults.standard.integer(forKey: "weatherCityIndex") : 0
     let cityList = ["新北市","高雄市","臺中市","臺北市","桃園市","臺南市","彰化縣","屏東縣","雲林縣","苗栗縣","嘉義縣","新竹縣","南投縣","宜蘭縣","新竹市","基隆市","花蓮縣","嘉義市","臺東縣","金門縣","澎湖縣","連江縣"]
     let cityEngList = ["taipei","kaohsiung","taichung","taipei","taoyuan","tainan","changhua","pingtung","tublib","maioli","chiayi","hsinchu","nantuo","yilan","hsinchu","keelung","hualien","chiayi","taitung","kinmen","penghu","lienchiang"]
     

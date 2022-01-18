@@ -7,13 +7,30 @@
 
 import SwiftUI
 
+extension String: Identifiable {
+    public var id: String { self }
+}
+
+struct SelectedNews: Identifiable{
+    public var id: String { url+title }
+    var url: String
+    var title: String
+}
+
 struct NewsDetailView: View {
     
     var theArticle:Article
     
     @StateObject var newsSearchViewModel = NewsSearchViewModel()
     
+    @Environment(\.managedObjectContext) private var viewContext
+    
     @Environment(\.openURL) var openURL
+    @State var showWebpage = false
+    @State var showMainWebpage = false
+    @State private var selectedURL: String? = nil
+    @State private var selectedTitle: String? = nil
+    @State private var selectedNews: SelectedNews? = nil
     
     var body: some View {
         ScrollView(){
@@ -39,9 +56,17 @@ struct NewsDetailView: View {
                 }
                 
                 Button("閱讀更多") {
-                    openURL(URL(string: theArticle.url)!)
+                    showMainWebpage = true
+                }.sheet(isPresented: $showMainWebpage) {
+                    WebView(urlStr: theArticle.url)
                 }.buttonStyle(.bordered).padding()
+                
                 Spacer()
+                
+                Button(action: addItem) {
+                    Label("收藏", systemImage: "plus")
+                }
+               
                 Divider()
                 Text("相關新聞：")
                 
@@ -49,12 +74,21 @@ struct NewsDetailView: View {
                 
                 ForEach(newsSearchViewModel.searchedNews){
                     item in
-                    Link(item.name, destination: URL(string: item.url)!).padding()
+//                    Link(item.name, destination: URL(string: item.url)!).padding()
+                    Button(item.name) {
+                        self.selectedURL = item.url
+                        self.selectedTitle = item.name
+                        self.selectedNews = SelectedNews(url: item.url, title: item.name)
+                        showWebpage = true
+                    }
+                    
                 }.overlay{
                     if(newsSearchViewModel.searchedNews.isEmpty){
                         ProgressView()
                     }
-                }
+                }.sheet(item:self.$selectedNews,content: {
+                    NewsWebView(newsTitle: $0.title, newsUrl: $0.url)
+                }).padding()
             }
             
             
@@ -64,6 +98,24 @@ struct NewsDetailView: View {
         }.frame(maxWidth:UIScreen.screenWidth,alignment: .topLeading).edgesIgnoringSafeArea(.top).onAppear {
             let tempStr = theArticle.title.components(separatedBy: "-").dropLast().joined(separator: "-")
             newsSearchViewModel.fetchItems(searchStr: tempStr)
+        }
+    }
+    
+    private func addItem() {
+        withAnimation {
+            let newItem = SavedNews(context: viewContext)
+            newItem.saveTime = Date()
+            newItem.title = theArticle.title
+            newItem.url = theArticle.url
+
+            do {
+                try viewContext.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
         }
     }
 }

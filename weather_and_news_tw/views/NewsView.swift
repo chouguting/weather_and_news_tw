@@ -10,6 +10,11 @@ import RefreshableScrollView
 
 
 struct NewsView: View {
+    
+    @Environment(\.managedObjectContext) private var viewContext
+
+    
+    
     @StateObject var newsViewModel = NewsViewModel()
     @State var showSheet = false
    
@@ -21,23 +26,25 @@ struct NewsView: View {
         
         RefreshableScrollView(refreshing: $refresh,action: {
             // add your code here
-            newsViewModel.fetchItems()
+            newsViewModel.refresh()
             // remmber to set the refresh to false
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 self.refresh = false
             }
         }) {
             LazyVGrid(columns: twoColumnGrid,spacing: 5){
-                
-                if(!newsViewModel.newArticles.isEmpty){
-                    ForEach(newsViewModel.newArticles){
-                        item in
+                //VStack {
+                if(!newsViewModel.newArticles.isEmpty && !newsViewModel.translatedTitle.isEmpty){
+                    ForEach(newsViewModel.newArticles.indices,id: \.self){
+                        i in
                         
                         Button {
                             showSheet = true
-                            selectedArticle = item
+                            selectedArticle = newsViewModel.newArticles[i]
                         } label: {
-                            NewsRow(arcticle: item)
+                            NewsRow(arcticle: newsViewModel.newArticles[i])
+                        }.onAppear {
+                            newsViewModel.fetchMore(currentItem: newsViewModel.newArticles[i])
                         }
                         //                    .sheet(isPresented: $showSheet) {
                         //
@@ -54,7 +61,7 @@ struct NewsView: View {
                 ProgressView()
             }
         }.refreshable {
-            newsViewModel.fetchItems()
+            newsViewModel.refresh()
         }.navigationTitle("新聞").listRowSeparator(.hidden).sheet(item: self.$selectedArticle) { item in
             NewsDetailView(theArticle: item)
         }
