@@ -11,6 +11,7 @@ import WebKit
 
 struct WebView: UIViewRepresentable{
     let urlStr:String
+    
 
     
     func makeUIView(context: Context) -> WKWebView {

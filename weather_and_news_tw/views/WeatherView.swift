@@ -14,6 +14,8 @@ extension Double {
 }
 
 struct WeatherView: View {
+    
+    @StateObject var weatherNews = NewsSearchViewModel()
     @StateObject var locationManager = LocationManager() //取得座標
     @StateObject var cityViewModel = CityViewModel() //把座標轉成城市的API
      
@@ -22,6 +24,7 @@ struct WeatherView: View {
     @StateObject var cityCurrentWeatherViewModel = CityCurrentWeatherViewModel() //open Weather的目前天氣API
     
     @State var requestingLocation = false
+    @State var showWebpage = false
     
     var body: some View {
         VStack{
@@ -64,6 +67,19 @@ struct WeatherView: View {
                             
             
                         }
+                        Section(header: Text("天氣新聞")) {
+                            ForEach(weatherNews.searchedNews){
+                                item in
+        
+                                Button(item.name) {
+                                    showWebpage = true
+                                }.padding()
+                                .sheet(isPresented: $showWebpage) {
+                                    //WebView(urlStr: item.url)
+                                    NewsWebView(newsTitle: item.name,newsUrl: item.url)
+                                }
+                            }
+                        }
                         
                     }
                 }.overlay{
@@ -71,6 +87,7 @@ struct WeatherView: View {
                         ProgressView()
                     }
                 }.refreshable {
+                    weatherNews.fetchItems(searchStr: "天氣")
                     cityWeatherForecastViewModel.fetchItems(locationStr: cityViewModel.cityList[cityViewModel.selectCityIndex])
                     cityCurrentWeatherViewModel.fetchItems(locationStr: cityViewModel.cityEngList[cityViewModel.selectCityIndex])
                 }
@@ -93,7 +110,7 @@ struct WeatherView: View {
 
                 cityViewModel.fetchItems(lat: location.coordinate.latitude, lon: location.coordinate.longitude)
             }
-            
+            weatherNews.fetchItems(searchStr: "天氣")
             cityViewModel.updateIndex()
             cityWeatherForecastViewModel.fetchItems(locationStr: cityViewModel.cityList[cityViewModel.selectCityIndex])
             cityCurrentWeatherViewModel.fetchItems(locationStr: cityViewModel.cityEngList[cityViewModel.selectCityIndex])
