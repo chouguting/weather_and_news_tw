@@ -46,11 +46,11 @@ struct Provider: TimelineProvider {
     
     
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(),newsTitle: ["AAAA"],newsUrl: ["www.google.com"])
+        SimpleEntry(date: Date(),newsTitle: ["這裡會顯示新聞"],newsUrl: ["www.google.com"])
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(),newsTitle: ["AAAA"],newsUrl: ["www.google.com"])
+        let entry = SimpleEntry(date: Date(),newsTitle: ["這裡會顯示新聞"],newsUrl: ["www.google.com"])
         completion(entry)
     }
 
