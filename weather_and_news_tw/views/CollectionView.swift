@@ -17,6 +17,7 @@ struct CollectionView: View {
     private var savedNews: FetchedResults<SavedNews>
     @State var filteredNews = [SavedNews]()
     @State var searchword:String = ""
+    @State private var animateGradient = false
     
     var body: some View {
         NavigationView {
@@ -44,7 +45,15 @@ struct CollectionView: View {
 //                    }
 //                }
             }.navigationTitle("收藏的新聞")
-            Text("請選擇新聞")
+            LinearGradient(colors: [.blue, .yellow], startPoint: animateGradient ? .topLeading : .bottomLeading, endPoint: animateGradient ? .bottomTrailing : .topTrailing).overlay(content: {
+                Text("請選擇新聞")
+            })
+            .ignoresSafeArea().onAppear {
+                withAnimation(.linear(duration: 2.0).repeatForever(autoreverses: true)) {
+                    animateGradient.toggle()
+                }
+            }
+            
         }.searchable(text: $searchword, placement: .navigationBarDrawer(displayMode: .always))
     }
     

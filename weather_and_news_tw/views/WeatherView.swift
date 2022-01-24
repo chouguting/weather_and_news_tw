@@ -25,6 +25,7 @@ struct WeatherView: View {
     
     @State var requestingLocation = false
     @State var showWebpage = false
+    private var idiom : UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     var body: some View {
         VStack{
@@ -40,13 +41,36 @@ struct WeatherView: View {
                         
                         //Text("Test")
                         if let cityCurrentWeather = cityCurrentWeatherViewModel.currentWeather{
-                           CurrentWeatherRow(cityCurrentWeather: cityCurrentWeather)
+                            CurrentWeatherRow(cityCurrentWeather: cityCurrentWeather).gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                                                                                                .onEnded({ value in
+                                if value.translation.width < 0 {
+                                    // 向左滑
+                                    if let url = URL(string: "https://www.cwb.gov.tw/V8/C/") {
+                                           UIApplication.shared.open(url)
+                                        }
+                                }
+                                
+                                if value.translation.width > 0 {
+                                    // 向右滑
+                                    if let url = URL(string: "https://openweathermap.org/") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                }
+                                
+                            }))
                             
                             
                         }else{
                             Text("loading...")
                         }
                     }
+                    
+                    if(idiom != .pad){
+                        Button(action: shareButton) {
+                            Label("分享", systemImage: "square.and.arrow.up")
+                        }
+                    }
+                    
                     
                     ForEach(cityWeatherForecastViewModel.weatherRecord) { item in
                         let timeslices_brief = item.weatherElement[0].time
@@ -115,6 +139,16 @@ struct WeatherView: View {
             cityWeatherForecastViewModel.fetchItems(locationStr: cityViewModel.cityList[cityViewModel.selectCityIndex])
             cityCurrentWeatherViewModel.fetchItems(locationStr: cityViewModel.cityEngList[cityViewModel.selectCityIndex])
         }
+        
+        
+    }
+    
+    func shareButton() {
+            let url = URL(string: "https://www.cwb.gov.tw/V8/C/")
+        
+            let activityController = UIActivityViewController(activityItems: [url!], applicationActivities: nil)
+
+            UIApplication.shared.windows.first?.rootViewController!.present(activityController, animated: true, completion: nil)
     }
 }
 

@@ -89,13 +89,13 @@ struct NewsDetailView: View {
                 }.sheet(item:self.$selectedNews,content: {
                     NewsWebView(newsTitle: $0.title, newsUrl: $0.url)
                 }).padding()
-            }
+            }.frame(maxWidth: UIScreen.screenWidth)
             
             
             
             
             
-        }.frame(maxWidth:UIScreen.screenWidth,alignment: .topLeading).edgesIgnoringSafeArea(.top).onAppear {
+        }.edgesIgnoringSafeArea(.top).onAppear {
             let tempStr = theArticle.title.components(separatedBy: "-").dropLast().joined(separator: "-")
             newsSearchViewModel.fetchItems(searchStr: tempStr)
         }
